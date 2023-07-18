@@ -13,7 +13,7 @@ def extractLatestVersions(response,modified_date):
             if key not in latest_versions or latest_versions[key]['LastModified'] < version['LastModified']:
                 latest_versions[key] = version
 
-# Copy all latest version of each file to another location
+# Copy all latest-version of each file to another location
 def copyLatestFiles(bucket_name, output_prefix):
     for version in latest_versions.values():
         file_path = version['Key']
