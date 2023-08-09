@@ -1,0 +1,37 @@
+name: Branch Limit
+
+on:
+  push:
+    branches-ignore:
+      - main  # Exclude the main branch from the check
+
+jobs:
+  check-branch-limit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check branch count
+        id: check_branch_count
+        run: |
+          # Fetch the list of branches and count them (excluding the main branch)
+          branch_count=$(git ls-remote --heads origin | grep -v "refs/heads/main" | wc -l)
+
+          # Set the branch limit
+          branch_limit=10
+
+          # Output the branch count for debugging purposes
+          echo "Number of branches: $branch_count"
+
+          # Check if the branch count exceeds the limit
+          if [ "$branch_count" -ge "$branch_limit" ]; then
+            echo "Branch limit exceeded. Blocking branch creation."
+            exit 1
+          fi
+
+      - name: Push changes if branch count is within limit
+        if: ${{ steps.check_branch_count.outcome == 'success' }}
+        run: |
+          git config --local user.email "rdkushwaha0021@gmail.com"
+          git config --local user.name "ravi.kushwah"
+          git checkout -b new-branch
+          git push origin new-branch
