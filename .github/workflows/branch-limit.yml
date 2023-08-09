@@ -31,7 +31,5 @@ jobs:
       - name: Push changes if branch count is within limit
         if: ${{ steps.check_branch_count.outcome == 'success' }}
         run: |
-          git config --local user.email "rdkushwaha0021@gmail.com"
-          git config --local user.name "Ravi Kushwah"
           git checkout -b new-branch
           git push origin new-branch
